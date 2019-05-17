@@ -8,7 +8,11 @@ function Meals(date, breakfast, lunch, dinner){
 function UI(){}
 
 
-// UI Prototypes
+//Local storage constructor
+// function Store(){}
+
+
+// UI Prototypes:
 
 UI.prototype.addMealsToList = function(meals){
     console.log(meals);
@@ -56,17 +60,20 @@ UI.prototype.showAlert = function(alertClass, message){
 
 //Event Listeners
 
-//Add meal to list
+//Add meal to list event listener
 document.getElementById('meal-form').addEventListener('submit', function(e){
     const ui = new UI,
          meals = new Meals;
+         dateValidation = /[a-z]/gi;
          meals.date = document.getElementById('date').value,
          meals.breakfast = document.getElementById('breakfast').value,
          meals.lunch = document.getElementById('lunch').value,
          meals.dinner = document.getElementById('dinner').value;
 
     if (meals.date === '' || meals.breakfast === '' || meals.lunch === '' || meals.dinner === '') {
-        ui.showAlert('error', 'Please fill out all fields. Thank you.')
+        ui.showAlert('error', 'Please fill out all fields. Thank you.');
+    } else if(dateValidation.test(meals.date)){
+        ui.showAlert('error', 'Date can only contain numbers and \/\'s, please use MM/DD/YY format');
     } else {
         ui.addMealsToList(meals);
         ui.showAlert('success', 'Today\'s meals have been sucessfully added to the list!');
