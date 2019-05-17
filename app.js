@@ -7,10 +7,8 @@ class Meals{
     }
 }
 
-
 class UI{
     addMealsToList = function(meals){
-        console.log(meals);
         //grab list
         const list = document.getElementById('meal-list');
         //create a new element
@@ -27,11 +25,12 @@ class UI{
         list.appendChild(row);
     }
 
+    //Set value of form inputs to empty string
     clearMeals = function(){
-        date = document.getElementById('date').value = '',
-        breakfast = document.getElementById('breakfast').value = '',
-        lunch = document.getElementById('lunch').value = '',
-        dinner = document.getElementById('dinner').value = '';
+       const date = document.getElementById('date').value = '',
+            breakfast = document.getElementById('breakfast').value = '',
+            lunch = document.getElementById('lunch').value = '',
+            dinner = document.getElementById('dinner').value = '';
     }
 
     showAlert = function(alertClass, message){
@@ -46,20 +45,12 @@ class UI{
         alertDiv.appendChild(document.createTextNode(`${message}`));
         //insert before form
         container.insertBefore(alertDiv, form);
-    
         //remove alert after 5 seconds
         setTimeout(function(){
            alertDiv.remove(); 
         }, 5000);
     }
 }
-
-
-// UI Prototypes:
-
-
-
-
 
 
 //Event Listeners
