@@ -1,61 +1,65 @@
-function Meals(date, breakfast, lunch, dinner){
-    this.date = date;
-    this.breakfast = breakfast;
-    this.lunch = lunch;
-    this.dinner = dinner;
+class Meals{
+    constructor (date, breakfast, lunch, dinner){
+        this.date = date;
+        this.breakfast = breakfast;
+        this.lunch = lunch;
+        this.dinner = dinner;
+    }
 }
 
-function UI(){}
 
+class UI{
+    addMealsToList = function(meals){
+        console.log(meals);
+        //grab list
+        const list = document.getElementById('meal-list');
+        //create a new element
+        const row = document.createElement('tr');
+        //insert html
+        row.innerHTML = `
+            <td>${meals.date}</td>
+            <td>${meals.breakfast}</td>
+            <td>${meals.lunch}</td>
+            <td>${meals.dinner}</td>
+            <td class="delete">X</th>
+        `;
+        //append row to list
+        list.appendChild(row);
+    }
 
-//Local storage constructor
-// function Store(){}
+    clearMeals = function(){
+        date = document.getElementById('date').value = '',
+        breakfast = document.getElementById('breakfast').value = '',
+        lunch = document.getElementById('lunch').value = '',
+        dinner = document.getElementById('dinner').value = '';
+    }
+
+    showAlert = function(alertClass, message){
+        //grab container and form so we can insert the alert into container but before form
+        const container = document.getElementById('wrapper');
+        const form = document.getElementById('meal-form');
+        //create alert div
+        const alertDiv = document.createElement('div');
+        //Set class names
+        alertDiv.className = `alert ${alertClass}`;
+        //insert text
+        alertDiv.appendChild(document.createTextNode(`${message}`));
+        //insert before form
+        container.insertBefore(alertDiv, form);
+    
+        //remove alert after 5 seconds
+        setTimeout(function(){
+           alertDiv.remove(); 
+        }, 5000);
+    }
+}
 
 
 // UI Prototypes:
 
-UI.prototype.addMealsToList = function(meals){
-    console.log(meals);
-    //grab list
-    const list = document.getElementById('meal-list');
-    //create a new element
-    const row = document.createElement('tr');
-    //insert html
-    row.innerHTML = `
-        <td>${meals.date}</td>
-        <td>${meals.breakfast}</td>
-        <td>${meals.lunch}</td>
-        <td>${meals.dinner}</td>
-        <td class="delete">X</th>
-    `;
-    //append row to list
-    list.appendChild(row);
-}
 
-UI.prototype.clearMeals = function(){
-    date = document.getElementById('date').value = '',
-    breakfast = document.getElementById('breakfast').value = '',
-    lunch = document.getElementById('lunch').value = '',
-    dinner = document.getElementById('dinner').value = '';
-}
 
-UI.prototype.showAlert = function(alertClass, message){
-    //grab container and form so we can insert the alert into container but before form
-    const container = document.getElementById('wrapper');
-    const form = document.getElementById('meal-form');
-    //create alert div
-    const alertDiv = document.createElement('div');
-    //Set class names
-    alertDiv.className = `alert ${alertClass}`;
-    //insert text
-    alertDiv.appendChild(document.createTextNode(`${message}`));
-    //insert before form
-    container.insertBefore(alertDiv, form);
 
-    setTimeout(function(){
-       alertDiv.remove(); }, 5000
-    );
-}
 
 
 //Event Listeners
