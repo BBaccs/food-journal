@@ -1,4 +1,4 @@
-class Meals{
+class Meals {
     constructor (date, breakfast, lunch, dinner){
         this.date = date;
         this.breakfast = breakfast;
@@ -7,7 +7,7 @@ class Meals{
     }
 }
 
-class UI{
+class UI {
     addMealsToList = function(meals){
         //grab list
         const list = document.getElementById('meal-list');
