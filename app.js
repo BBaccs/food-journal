@@ -26,11 +26,11 @@ class UI {
     }
 
     //Set value of form inputs to empty string
-    clearMeals = function(){
-       const date = document.getElementById('date').value = '',
-            breakfast = document.getElementById('breakfast').value = '',
-            lunch = document.getElementById('lunch').value = '',
-            dinner = document.getElementById('dinner').value = '';
+    clearInputFields = function() {
+        document.getElementById('date').value = '',
+        document.getElementById('breakfast').value = '',
+        document.getElementById('lunch').value = '',
+        document.getElementById('dinner').value = '';
     }
 
     showAlert = function(alertClass, message){
@@ -52,34 +52,99 @@ class UI {
     }
 }
 
+//Local storage functionality
+class Store {
+    static getLocalMeals() {
+        let meals;
+        if (localStorage.getItem('meals') === null) {
+            meals = [];
+        } else {
+            meals = JSON.parse(localStorage.getItem('meals'));
+        }
+        return meals;
+    }
+    static displayLocalMeals() {
+        const meals = Store.getLocalMeals();
+
+        meals.forEach(function(meal){
+            const ui = new UI;
+
+            ui.addMealsToList(meal);
+        });
+    }
+    static setMealsToLocal(meal) {
+        const meals = Store.getLocalMeals();
+
+        meals.push(meal);
+    
+        localStorage.setItem('meals', JSON.stringify(meals));
+    }
+    static removeLocalMeals(date) {
+        const meals = Store.getLocalMeals();
+
+        meals.forEach(function(meal, index){
+        if(meal.date === date) {
+            meals.splice(index, 1);
+        }
+    });
+    localStorage.setItem('meals', JSON.stringify(meals));
+  }
+}
 
 //Event Listeners
 
+document.addEventListener('DOMContentLoaded', Store.displayLocalMeals);
+
 //Add meal to list event listener
 document.getElementById('meal-form').addEventListener('submit', function(e){
+    //Instantiate necessarry instances
     const ui = new UI,
-         meals = new Meals;
-         dateValidation = /[a-z]/gi;
+         meals = new Meals(date, breakfast, lunch, dinner);
+
+         //create dateValidation
+         const dateValidation = /[a-z]/gi;
+
+         //set meals instance properties to be equal to the value of the designated input in the field
          meals.date = document.getElementById('date').value,
          meals.breakfast = document.getElementById('breakfast').value,
          meals.lunch = document.getElementById('lunch').value,
          meals.dinner = document.getElementById('dinner').value;
 
     if (meals.date === '' || meals.breakfast === '' || meals.lunch === '' || meals.dinner === '') {
+        //Error Alert, for empty fields
         ui.showAlert('error', 'Please fill out all fields. Thank you.');
     } else if(dateValidation.test(meals.date)){
+        //Error alert, for entering a date that is not valid (contains letters)
         ui.showAlert('error', 'Date can only contain numbers and \/\'s, please use MM/DD/YY format');
     } else {
+        //Add meals to list
         ui.addMealsToList(meals);
+
+        //Add to LS
+        Store.setMealsToLocal(meals);
+
+        //Show success alert for adding meals
         ui.showAlert('success', 'Today\'s meals have been sucessfully added to the list!');
-        ui.clearMeals();     
+
+        //Clear input fields
+        ui.clearInputFields();     
     }
     e.preventDefault();
 });
 
 //Delete meal from list
 document.getElementById('meal-list').addEventListener('click', function(e){
+    const ui = new UI;
+
+    //remove from UI
     if (e.target.className === 'delete') {
         e.target.parentElement.remove();
+        Store.removeLocalMeals(e.target.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.textContent);
+        ui.showAlert('success', 'Meals Removed!');
     }
+    
+    //remove from LS
+    
+    console.log(e.target.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.textContent);
+    
 });
