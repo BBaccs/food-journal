@@ -99,8 +99,8 @@ document.addEventListener('DOMContentLoaded', Store.displayLocalMeals);
 document.getElementById('meal-form').addEventListener('submit', function(e){
     //Instantiate necessarry instances
     const ui = new UI,
-         meals = new Meals(date, breakfast, lunch, dinner);
-
+         meals = new Meals();
+      
          //create dateValidation
          const dateValidation = /[a-z]/gi;
 
@@ -136,15 +136,11 @@ document.getElementById('meal-form').addEventListener('submit', function(e){
 document.getElementById('meal-list').addEventListener('click', function(e){
     const ui = new UI;
 
-    //remove from UI
     if (e.target.className === 'delete') {
+        //remove from UI
         e.target.parentElement.remove();
+        //remove from LS
         Store.removeLocalMeals(e.target.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.textContent);
         ui.showAlert('success', 'Meals Removed!');
-    }
-    
-    //remove from LS
-    
-    console.log(e.target.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.textContent);
-    
+    } 
 });
