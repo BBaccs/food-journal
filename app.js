@@ -52,6 +52,7 @@ class UI {
     }
 }
 
+
 //Local storage functionality
 class Store {
     static getLocalMeals() {
